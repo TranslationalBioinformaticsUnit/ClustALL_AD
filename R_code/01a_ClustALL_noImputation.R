@@ -1,16 +1,12 @@
 set.seed(1234)
 
 ## Step 0. Prepare the environment
-# load the functions & data
+# Load the functions & data
 source("00_Functions.R")
-load("../data/data_use.RData") 
+load("../data/data_use.RData") # Complete dataset
 
-# load libraries & data
-packages.all <- c("clValid", "FactoMineR", "modeest", "clusteval", "corrplot",
-                  "dplyr","fpc")
-lapply(packages.all, require, character.only=TRUE)
 
-# create the objects to store the results
+# Create the objects to store the results
 nvariables <- ncol(data_use) # Number of variables
 
 # Create empty matrix for clustering 
