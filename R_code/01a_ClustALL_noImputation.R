@@ -153,7 +153,7 @@ for (t in 1:summary_clusters_c[heights_cut,  1]) {
 }
   
   
-#### Step 2.1.4. d) Gower Distance + H-Clust method
+#### Step 2.1.4. d) Gower Distance + H-Clust method 
 divisive.clust <- diana(as.matrix(gower_dist), diss = TRUE, keep.diss = TRUE)
 summary_clusters_d[heights_cut, 1] <- cstats.table_hclust(gower_dist, divisive.clust, 6)
 hclustgow_res_c <- cutree(divisive.clust, k=summary_clusters_d[heights_cut, 1])
