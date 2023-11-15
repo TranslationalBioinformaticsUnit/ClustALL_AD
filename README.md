@@ -1,5 +1,9 @@
 # ClustALL_AD
+Code repository for the analysis in the following article:
+
 ClustALL: A robust clustering strategy for stratification of patients with acutely decompensated cirrhosis.
+
+### Medarxive link:
 
 ## 1. Context and Aim.
 Patient heterogeneity poses a significant obstacle in both individual patient management and the design of clinical trials, particularly in the management of complex diseases. Many existing clinical classifications rely on scores constructed for predicting patient outcomes. However, these conventional methods may overlook features contributing to heterogeneity that do not necessarily translate into prognostic implications.
@@ -8,7 +12,7 @@ To tackle the issue of patient heterogeneity upon hospital admission considering
 
  Image
  
-### Medarxive link:
+
 
 ## 2. Programming Environment & Scripts.
 ClustAll pipeline has been stablished in R version 4.2.2 (2022-10-31).
