@@ -217,11 +217,10 @@ summary_clusters_b[heights_cut, 1] <- oS_hclust
   
   
 # Gower distances: the clustering methods that are going to be applied here are (c) K-Medoids and (d) H-Clust clustering
-# Gower treats different the different data types, let's assess the type of the embeddings and perform the necessary modifications
+  # Gower treats different the different data types, let's assess the type of the embeddings and perform the necessary modifications
 
 summary_gower_nimp <- vector(mode="list", length=nimp)
-
-for (i in 1:nimp){
+  for (i in 1:nimp){
   cat("imp:",i,"\n")
   summary_gower <- list()
   for (j in 1:length(my_PCAs[[1]])){
@@ -255,33 +254,82 @@ for (i in 1:nimp){
   summary_gower_nimp[[i]] <- summary_gower
 }
 
+#### Step 2.1.3. c) Gower Distance + K-Medoids clustering method
+
 oS_gow_PAM <- cstats.table_PAM(gower_dist, 6)  
   
-#### Step 2.1.3. c) Gower Distance + K-Medoids clustering method
-# apply the previous formula to get the optimal number of clusters for each depth of the dendrogram with gower distance + PAM (K-medoids)   
-summary_clusters_c[heights_cut, 1] <- cstats.table_PAM(gower_dist, 6)
-pam_res <- pam(gower_dist, k=summary_clusters_c[heights_cut, 1])
-pam_res_c <- pam_res$clustering
-  
-# calculate for each depth and its corresponding optimal cluster number
-for (t in 1:summary_clusters_c[heights_cut,  1]) {
-  induse <- as.numeric(names(pam_res_c[pam_res_c==t]))
-  summary_matrices_c[[heights_cut]][induse, induse] <- summary_matrices_c[[heights_cut]][induse, induse] + 1 # add result
+## apply the previous formula to get the optimal cluster number for each depth and each imputation with Gower distance and kmedoids (PAM)
+  for (i in 1:nimp){
+  cat("imp:",i,"\n")
+  for (j in 1:(ncol(data_use)-2)){
+    cat(j,"-")
+      oS_gow_PAM <- cstats.table_PAM(summary_gower_nimp[[i]][[j]], 6)
+      summary_clusters_PAM[j,i] <- oS_gow_PAM
+  }
+  cat("\n")
 }
-  
-  
-#### Step 2.1.4. d) Gower Distance + H-Clust method 
-divisive.clust <- diana(as.matrix(gower_dist), diss = TRUE, keep.diss = TRUE)
-summary_clusters_d[heights_cut, 1] <- cstats.table_hclust(gower_dist, divisive.clust, 6)
-hclustgow_res_c <- cutree(divisive.clust, k=summary_clusters_d[heights_cut, 1])
-names(hclustgow_res_c) <- 1:dim(data_use)[1]
-  
-for (t in 1:summary_clusters_d[heights_cut, 1])  {
-  induse <- as.numeric(names(hclustgow_res_c[hclustgow_res_c==t]))
-  summary_matrices_d[[heights_cut]][induse, induse] <- summary_matrices_d[[heights_cut]][induse, induse] + 1 # add result
+
+  ## CALCULATE TREE for each cut and each imputation and its corresponding optimal K  + RECOMPUTE DISTANCE MATRIX (1000X1000 individuals)
+for(myheigh in 1:(ncol(data_use)-2)){
+  cat("depth:",myheigh,"\n")
+  for(impgo in 1:nimp){
+    cat(j,"-")
+    pam_res <- pam(summary_gower_nimp[[impgo]][[myheigh]],k=summary_clusters_PAM[myheigh,impgo])
+    pam_res_c <- pam_res$clustering
+    names(pam_res_c) <- 1:nrow(data_use)
+    for(t in 1:summary_clusters_PAM[myheigh,impgo])  {
+      induse <- names(pam_res_c[pam_res_c==t])
+      summary_matrices_PAM[[myheigh]][induse,induse] <- summary_matrices_PAM[[myheigh]][induse,induse] + 1
+  }
 }
 }
 
+
+  
+#### Step 2.1.4. d) Gower Distance + H-Clust method 
+divisive.clust_nimp <- vector(mode="list", length=nimp)
+
+for (i in 1:((ncol(data_use)-2)){
+  cat("imp:",i,"\n")
+  for (j in 1:(ncol(data_use)-2)){
+    cat(j,"-")
+      divisive.clust <- diana(as.matrix(summary_gower_nimp[[i]][[j]]), 
+                          diss = TRUE, keep.diss = TRUE)
+      
+      divisive.clust_nimp[[i]][[j]] <- divisive.clust
+  }
+  cat("\n")
+}
+
+oS_gow_hclust <- cstats.table_hclust(gower_dist, divisive.clust, 6)
+
+       ## CALCULATE Summary clusters
+for (i in 1:nimp){
+  cat("imp:",i,"\n")
+  for (j in 1:(ncol(data_use)-2)){
+    cat(j,"-")
+      oS_gow_hclust <- cstats.table_hclust(summary_gower_nimp[[i]][[j]], divisive.clust_nimp[[i]][[j]], 6)
+      summary_clusters_HCLUST_gow[j,i] <- oS_gow_hclust
+  }
+  cat("\n")
+}
+```
+
+```{r}
+## RECOMPUTE DISTANCE MATRIX (1000X1000 individuals)
+for(myheigh in 1:72){
+  for(impgo in 1:nimp){
+    hclustgow_res <- divisive.clust_1000[[impgo]][[myheigh]]
+    hclustgow_res_c <- cutree(hclustgow_res,k=summary_clusters_HCLUST_gow[myheigh,impgo])
+    names(hclustgow_res_c) <- 1:766
+    for(t in 1:summary_clusters_HCLUST_gow[myheigh,impgo])  {
+      induse <- names(hclustgow_res_c[hclustgow_res_c==t])
+      summary_matrices_HCLUST_gow[[myheigh]][induse,induse] <- summary_matrices_HCLUST_gow[[myheigh]][induse,induse] + 1
+  }
+}
+}
+
+       
 ### END OF Step 2.1
 
 
@@ -313,8 +361,16 @@ if (length(which(lapply(tmp, sum)==0)) > 0) {
   message("Removing the following empty matrices: ") 
   message(paste(names((which(lapply(tmp, sum)==0)))), ".")
 }
+#####
 
 
+
+
+
+
+
+
+                                                                      
 ### Step 2.2. Filtering non-robust stratifications
 summary_clusters <- vector("list", length(summary_matrices_MEASURES))
 
