@@ -15,22 +15,21 @@ ClustAll pipeline has been stablished in R version 4.2.2 (2022-10-31).
 
 - 00_Functions.R -> Contains all the internal functions and required packages that are necessary to run the ClustAll pipeline.
 - 01a_ClustAll_noImputation.R -> Complete cluster pipeline for data sets with **NO missing values**. 
-   >**Step 1**: *Data Complexity Reduction*  **Step 2**: *Stratification Process*  **Step 3**: *Stratification Representatives*.
+   >**Step 1**: *Data Complexity Reduction*
+   >**Step 2**: *Stratification Process*
+   >**Step 3**: *Stratification Representatives*.
    
 - 01b_ClustAll_Imputation.R -> Complete cluster pipeline for data sets with **missing values**. The pipeline performs **imputations** to deal with NAs (the number of imputations can be specified). 
-   >**Step 0:** *Imputation*  **Step 1**: *Data Complexity Reduction*  **Step 2**: *Stratification Process*  **Step 3**: *Stratification Representatives*.
+   >**Step 0:** *Imputation*
+   >**Step 1**: *Data Complexity Reduction*
+   >**Step 2**: *Stratification Process*
+   >**Step 3**: *Stratification Representatives*.
 
 ## 3. Input data.
 ClustALL is capable of processing both binary and numerical clinical variables as its input. Categorical features undergo transformation using a one-hot encoder method. A minimum of two features is necessary, although incorporating additional features enhances the precision of clustering. It's crucial to acknowledge that augmenting the number of features might also escalate computation time.
 
 ## 4. Approach.
-- 00_Functions.R -> Contains all the internal functions and required packages that are necessary to run the ClustAll pipeline.
-- 01a_ClustAll_noImputation.R -> Complete cluster pipeline for data sets with **NO missing values**. 
-   >**Step 1**: *Data Complexity Reduction*  **Step 2**: *Stratification Process*  **Step 3**: *Stratification Representatives*.
-   
-- 01b_ClustAll_Imputation.R -> Complete cluster pipeline for data sets with **missing values**. The pipeline performs **imputations** to deal with NAs (the number of imputations can be specified). 
-   >**Step 0:** *Imputation*  **Step 1**: *Data Complexity Reduction*  **Step 2**: *Stratification Process*  **Step 3**: *Stratification Representatives*.
-   
+
 ## 5. Data used.
 As a proof of concept, CLustAll was applied to PREDICT [ref] a prospective European multicenter cohort comprising patients with acutely decompensated cirrhosis (AD) (n=766). A total of 74 clinical variables collected at hospital inclusion with less than 30% of missing values were considered as input. 
 
