@@ -18,12 +18,12 @@ To tackle the issue of patient heterogeneity upon hospital admission considering
 ClustAll pipeline has been stablished in R version 4.2.2 (2022-10-31).
 
 - 00_Functions.R -> Contains all the internal functions and required packages that are necessary to run the ClustAll pipeline.
-- 01a_ClustAll_noImputation.R -> Complete cluster pipeline for data sets with **NO missing values**. 
+- 01a_ClustALL_noImputation.R -> Complete cluster pipeline for data sets with **NO missing values**. 
    >**Step 1**: *Data Complexity Reduction*
    >**Step 2**: *Stratification Process*
    >**Step 3**: *Stratification Representatives*.
    
-- 01b_ClustAll_Imputation.R -> Complete cluster pipeline for data sets with **missing values**. The pipeline performs **imputations** to deal with NAs (the number of imputations can be specified). 
+- 01b_ClustALL_Imputation.R -> Complete cluster pipeline for data sets with **missing values**. The pipeline performs **imputations** to deal with NAs (the number of imputations can be specified). 
    >**Step 0:** *Imputation*
    >**Step 1**: *Data Complexity Reduction*
    >**Step 2**: *Stratification Process*
