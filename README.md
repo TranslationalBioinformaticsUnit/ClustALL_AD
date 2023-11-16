@@ -39,7 +39,8 @@ ClustALL pipeline has been stablished in R version 4.2.2 (2022-10-31).
 ## 3. Input data.
 ClustALL is capable of processing both binary and numerical clinical variables as its input. Categorical features undergo transformation using a one-hot encoder method. A minimum of two features is necessary, although incorporating additional features enhances the precision of clustering. It is crucial to acknowledge that augmenting the number of features might also escalate computation time.
 
-e.g.
+e.g.   
+
  ![alt text](https://github.com/TranslationalBioinformaticsUnit/ClustALL_AD/blob/main/Fig_2.jpg?raw=true)
  
 ## 4. Approach.
