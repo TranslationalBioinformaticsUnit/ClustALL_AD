@@ -1,7 +1,7 @@
 # ClustALL_AD
 Code repository for the analysis in the following article:
 
-## ClustALL: A robust clustering strategy for stratification of patients with acutely decompensated cirrhosis.
+###### ClustALL: A robust clustering strategy for stratification of patients with acutely decompensated cirrhosis.
 
 #### Medarxive link:
 
