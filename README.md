@@ -5,6 +5,13 @@ ClustALL: A robust clustering strategy for stratification of patients with acute
 
 ### Medarxive link:
 
+
+[1. Context and Aim](#1. Context and Aim)  
+[2. Programming Environment & Scripts](#2. Programming Environment & Scripts)  
+[3. Input data](#3. Input data)  
+[4. Approach](#4. Approach])  
+[5. Data used](#5. Data used)  
+
 ## 1. Context and Aim.
 Patient heterogeneity poses a significant obstacle in both individual patient management and the design of clinical trials, particularly in the management of complex diseases. Many existing clinical classifications rely on scores constructed for predicting patient outcomes. However, these conventional methods may overlook features contributing to heterogeneity that do not necessarily translate into prognostic implications.
 
@@ -15,9 +22,9 @@ To tackle the issue of patient heterogeneity upon hospital admission considering
 
 
 ## 2. Programming Environment & Scripts.
-ClustAll pipeline has been stablished in R version 4.2.2 (2022-10-31).
+ClustALL pipeline has been stablished in R version 4.2.2 (2022-10-31).
 
-- 00_Functions.R -> Contains all the internal functions and required packages that are necessary to run the ClustAll pipeline.
+- 00_Functions.R -> Contains all the internal functions and required packages that are necessary to run the ClustALL pipeline.
 - 01a_ClustALL_noImputation.R -> Complete cluster pipeline for data sets with **NO missing values**. 
    >**Step 1**: *Data Complexity Reduction*
    >**Step 2**: *Stratification Process*
@@ -30,14 +37,15 @@ ClustAll pipeline has been stablished in R version 4.2.2 (2022-10-31).
    >**Step 3**: *Stratification Representatives*.
 
 ## 3. Input data.
-ClustALL is capable of processing both binary and numerical clinical variables as its input. Categorical features undergo transformation using a one-hot encoder method. A minimum of two features is necessary, although incorporating additional features enhances the precision of clustering. It's crucial to acknowledge that augmenting the number of features might also escalate computation time.
+ClustALL is capable of processing both binary and numerical clinical variables as its input. Categorical features undergo transformation using a one-hot encoder method. A minimum of two features is necessary, although incorporating additional features enhances the precision of clustering. It is crucial to acknowledge that augmenting the number of features might also escalate computation time.
+
+e.g.
 
 ## 4. Approach.
 
 ## 5. Data used.
-As a proof of concept, CLustAll was applied to PREDICT [ref] a prospective European multicenter cohort comprising patients with acutely decompensated cirrhosis (AD) (n=766). A total of 74 clinical variables collected at hospital inclusion with less than 30% of missing values were considered as input. 
+As a proof of concept, CLustALL was applied to a subset of patients from the PREDICT (NCT03056612) cohort, a prospective European multicenter cohort comprising patients with acutely decompensated cirrhosis (AD). A total of 74 clinical variables from 766 patients collected at hospital inclusion with less than 30% of missing values were considered as input. 
 
-ClustAll revealed five robust stratifications based solely on clinical data collected at hospital admission. All identified stratifications incorporated markers of impaired liver function and the number of organ dysfunction or failure, with most also encompassing precipitating events. Upon focusing on one of these stratifications, patients were categorized into three clusters characterized by typical clinical features, which also demonstrated prognostic value. A re-assessment of patient stratification during follow-up delineated outcomes, further enhancing the prognostic value of the stratification. These findings were also validated in ACLARA [ref], an independent prospective multicenter cohort of patients from Latin America (n=580).
-
+Researchers who provide a methodology sound proposal can apply for the data, as far as the proposal is in line with the research consented by the patients. These proposals should be requested through www.datahub.clifresearch.com. Data requestors will need to sign a data transfer agreement. 
 
 
