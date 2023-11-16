@@ -43,7 +43,7 @@ e.g.
 
  ![alt text](https://github.com/TranslationalBioinformaticsUnit/ClustALL_AD/blob/main/Fig_2.jpg?raw=true)
  
-## 4. Approach.
+## 4. Approach. 
 The ClustALL methodology consists of three main steps: 
 (1) Data Complexity Reduction (depicted in the Green Panel in the Figure) aims to simplify the original dataset by reducing redundant information, specifically highly correlated variables. This step yields a series of embeddings, each derived from distinct groupings of clinical variables.   
 
