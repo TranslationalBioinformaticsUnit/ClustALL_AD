@@ -6,11 +6,11 @@ ClustALL: A robust clustering strategy for stratification of patients with acute
 ### Medarxive link:
 
 
-[1. Context and Aim](#1. Context and Aim)  
-[2. Programming Environment & Scripts](#2. Programming Environment & Scripts)  
-[3. Input data](#3. Input data)  
-[4. Approach](#4. Approach])  
-[5. Data used](#5. Data used)  
+- [1. Context and Aim](#1. Context and Aim)  
+- [2. Programming Environment & Scripts](#2. Programming Environment & Scripts)  
+- [3. Input data](#3. Input data)  
+- [4. Approach](#4. Approach])  
+- [5. Data used](#5. Data used)  
 
 ## 1. Context and Aim.
 Patient heterogeneity poses a significant obstacle in both individual patient management and the design of clinical trials, particularly in the management of complex diseases. Many existing clinical classifications rely on scores constructed for predicting patient outcomes. However, these conventional methods may overlook features contributing to heterogeneity that do not necessarily translate into prognostic implications.
@@ -40,7 +40,8 @@ ClustALL pipeline has been stablished in R version 4.2.2 (2022-10-31).
 ClustALL is capable of processing both binary and numerical clinical variables as its input. Categorical features undergo transformation using a one-hot encoder method. A minimum of two features is necessary, although incorporating additional features enhances the precision of clustering. It is crucial to acknowledge that augmenting the number of features might also escalate computation time.
 
 e.g.
-
+ ![alt text](https://github.com/TranslationalBioinformaticsUnit/ClustALL_AD/blob/main/Fig_2.jpg?raw=true)
+ 
 ## 4. Approach.
 
 ## 5. Data used.
