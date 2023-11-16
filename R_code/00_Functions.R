@@ -1,17 +1,28 @@
+### 00_Functions.R
+# This file contains the required packages and functions to run ClustALL
+
+
+######## Check if the required packages are installed ########
+packages <- c("dplyr", "ggplot2", "cluster", "mclust", "clValid", "modeest", "mice", 
+              "FactoMineR", "MASS", "corrplot", "clusteval", "fpc", "haven", "naniar",
+              "reshape2", "circlize", "labelled",  "Rtsne")
+
+new.packages = packages[!(packages %in% installed.packages()[,"Package"])]
+
+install.packages(new.packages)
+
 ######## Load required packages and functions ########
-
-
 ### Required packages
 
-x <- c("dplyr", "ggplot2", "cluster", "mclust", "clValid", "modeest", "mice",
+packages <- c("dplyr", "ggplot2", "cluster", "mclust", "clValid", "modeest", "mice",
        "FactoMineR", "MASS", "corrplot", "clusteval", "fpc", "haven", "naniar",
       "reshape2", "circlize", "labelled",  "Rtsne")
 
-lapply(x, require, character.only = TRUE)
+lapply(packages, require, character.only = TRUE)
 
 ###  Required Functions
 
-# > PCA derived information
+       # > PCA derived information
 
 generatePCA_derived <- function(data,variability,maxvar)
 {
@@ -23,7 +34,7 @@ generatePCA_derived <- function(data,variability,maxvar)
   res
 }
 
-# > 
+       # > Function to choose the best cluster number considering the Gower distance and the K-medoids clustering algorithm
 cstats.table_PAM <- function(dist, k) {
   clust.assess <- c("cluster.number","wb.ratio","dunn","avg.silwidth")
   output.stats <- matrix(ncol = length(clust.assess), nrow = k-1)
@@ -42,9 +53,35 @@ cstats.table_PAM <- function(dist, k) {
   #return(output.stats)
   output.stats.df <- as.data.frame(output.stats)
   
-  resultado <- median(c(output.stats.df[which.max(output.stats.df$avg.silwidth),]$cluster.number,
+  res <- median(c(output.stats.df[which.max(output.stats.df$avg.silwidth),]$cluster.number,
                         output.stats.df[which.max(output.stats.df$dunn),]$cluster.number,
                         output.stats.df[which.min(output.stats.df$wb.ratio),]$cluster.number))
   
-  return(resultado)
+  return(res)
+}
+
+       # > Function to choose the best cluster number considering the Gower distance and the H-clust clustering algorithm
+cstats.table_hclust <- function(dist, tree,k) {
+  clust.assess <- c("cluster.number","wb.ratio","dunn","avg.silwidth")
+  output.stats <- matrix(ncol = length(clust.assess), nrow = k-1)
+
+  for(i in 2:k)
+  {
+    
+    output.stats[i-1,] <- unlist(cluster.stats(d = dist, clustering = cutree(tree, k = i))[clust.assess])
+   
+      
+  }
+  
+  colnames(output.stats) <- clust.assess
+  rownames(output.stats) <- c(2:k)
+
+  #return(output.stats)
+  output.stats.df <- as.data.frame(output.stats)
+  
+  res <- median(c(output.stats.df[which.max(output.stats.df$avg.silwidth),]$cluster.number,
+                        output.stats.df[which.max(output.stats.df$dunn),]$cluster.number,
+                        output.stats.df[which.min(output.stats.df$wb.ratio),]$cluster.number))
+  
+  return(res)
 }
