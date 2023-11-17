@@ -6,13 +6,13 @@ Code repository for the analysis in the following article:
 #### Medarxive link:
 
 
-- [1.Context](#1.context)  
+- [1Context](#1context)  
 - [2. Programming Environment & Scripts](#2.-programming-environment-&-scripts.)  
 - [3. Input data](#3.-input-data.)  
 - [4. Approach](#4.-approach.)  
 - [5. Data used](#5.data-used.)  
 
-## 1.Context
+## 1Context
 Patient heterogeneity poses a significant obstacle in both individual patient management and the design of clinical trials, particularly in the management of complex diseases. Many existing clinical classifications rely on scores constructed for predicting patient outcomes. However, these conventional methods may overlook features contributing to heterogeneity that do not necessarily translate into prognostic implications.
 
 To tackle the issue of patient heterogeneity upon hospital admission considering clinical features, we introduced ClustALL, a computational pipeline adept at handling common challenges associated with clinical data, such as mixed data types, missing values, and collinearity. ClustALL also facilitates the unsupervised identification of multiple and robust stratifications. 
