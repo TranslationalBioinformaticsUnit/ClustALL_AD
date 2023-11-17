@@ -1,4 +1,4 @@
-### 01_ClustALL_noImputation.R
+### 01a_ClustALL_noImputation.R
 # This file contains the code to run ClustALL taking as an input a complete dataset with no missing values.
 
 set.seed(1234)
