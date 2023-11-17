@@ -17,7 +17,7 @@ Patient heterogeneity poses a significant obstacle in both individual patient ma
 
 To tackle the issue of patient heterogeneity upon hospital admission considering clinical features, we introduced ClustALL, a computational pipeline adept at handling common challenges associated with clinical data, such as mixed data types, missing values, and collinearity. ClustALL also facilitates the unsupervised identification of multiple and robust stratifications. 
 
- ![alt text](https://github.com/TranslationalBioinformaticsUnit/ClustALL_AD/blob/main/Fig_1_6_25.jpg?raw=true)
+ ![alt text](https://github.com/TranslationalBioinformaticsUnit/ClustALL_AD/blob/Figures/Fig_1.jpg?raw=true)
 
 
 
@@ -42,7 +42,7 @@ ClustALL is capable of processing both binary and numerical clinical variables a
 
 e.g.   
 
- ![alt text](https://github.com/TranslationalBioinformaticsUnit/ClustALL_AD/blob/main/Fig_2.jpg?raw=true)
+ ![alt text](https://github.com/TranslationalBioinformaticsUnit/ClustALL_AD/blob/Figures/Fig_2.jpg?raw=true)
  
 ## 4-Approach
 The ClustALL methodology consists of three main steps: 
