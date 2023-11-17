@@ -1,46 +1,16 @@
-
-data_use <- imp
-
-set.seed(1234)
-# This file contains the code to run ClustALL taking as an input a complete dataset with no missing values.
-
-set.seed(1234)
+### 01b_ClustALL_Imputation.R
+# This file contains the code to run ClustALL taking as an input an imputed dataset. This takes as an example a dataset imputed with MICE package (Go to 00.Imputation.R)
 
 ######## Step 0. Prepare the environment ########
 # Load the packages and functions described in the "00_Functions.R" file
 source("00_Functions.R")
 
-# Load the complete dataset
-load("../data/data_use.RData") 
+# Load the imputed dataset
+load("../data/data_imp.RData") 
+data_use <- imp
+nimp <- 1000 # number of imputations considered
 
-# Dataset exploration
-print("Dataset dimension -") 
-dim(data_use)
-
-print("Position of missing values -") # Data frame should not contain missig values. If it has missing values, go to script 01b.
-which(is.na(data_use)) 
-
-print("Variables type -")
-str(data_use)
-
-nvariables <- ncol(data_use) # Store the number of variables
-
-# Categorical variables are converted to binary with one-hot enconding
-tobin <- data_use[, sapply(data_use, is.factor)] # Select factor variables
-# Define one-hot encoding function
-dummy <- dummyVars(" ~ .", data=tobin)
-# Perform one-hot encoding on data frame
-bin <- data.frame(predict(dummy, newdata=tobin))
-names(bin) <- names(tobin)
-
-data_use <- data_use[ , !(names(data_use) %in% names(tobin))] # Remove factor variables
-data_use <- cbind(data_use, bin) # Add binarized facor variables
-
-data_use[,1:nvariables] <- data.frame(apply(data_use[,1:nvariables], 2, as.numeric))
-
-## Step 0. Prepare the environment
-
-# Create the objects to store the results
+# Create the objects to store the ClustALL stratifications (a: Correlation + K-means ,b: Correlation + H-clust, c: Gower +  K-medoids, d: Gower + H-clust)
 nvariables <- ncol(data_use) # Number of variables
 
 # Create empty matrix for clustering 
@@ -78,7 +48,7 @@ for(i in 1:(nvariables))
   summary_matrices_d[[i]] <- m4
 }
 ​
-## Step 1. Data Complexity Reduction
+######## Step 1. Data Complexity Reduction ########
 ### Step 1.1. Dendrogram to assess the correlation between variables, and stablish the number of Depths
 my_PCAs <- vector(mode="list", length=nimp)
 
@@ -124,7 +94,7 @@ for (heights_cut in (length(possible_heights)-(ncol(data_use)-2)):(length(possib
 }
   ## END OF Step 1. 
   
-## Step 2. Statrification Process
+######## Step 2. Statrification Process ########
 ### Step 2.1. Conducting statrifications 
 data_PCA_scaled <- apply(data_PCA, 2, scale) # scale PCA values for correlation distances; the clustering methods that are going to be applied here are (a) K-MEANS and (b) H-CLUST clustering
 rownames(data_PCA_scaled) <- 1:nrow(data_PCA_scaled) # rename otherwise clValid function does not detect rownames of the df
@@ -220,7 +190,7 @@ oS_gow_PAM <- cstats.table_PAM(gower_dist, 6)
   cat("\n")
 }
 
-  ## CALCULATE TREE for each cut and each imputation and its corresponding optimal K  + RECOMPUTE DISTANCE MATRIX (1000X1000 individuals)
+  ## CALCULATE TREE for each cut and each imputation and its corresponding optimal K  + RECOMPUTE DISTANCE MATRIX to consider the imputations
 for(myheigh in 1:(ncol(data_use)-2)){
   cat("depth:",myheigh,"\n")
   for(impgo in 1:nimp){
@@ -264,15 +234,13 @@ for (i in 1:nimp){
   }
   cat("\n")
 }
-```
 
-```{r}
-## RECOMPUTE DISTANCE MATRIX (1000X1000 individuals)
-for(myheigh in 1:72){
+## Recompute distance matrix , to consider the imputations
+for(myheigh in 1:(ncol(data_use)-2)){
   for(impgo in 1:nimp){
     hclustgow_res <- divisive.clust_1000[[impgo]][[myheigh]]
     hclustgow_res_c <- cutree(hclustgow_res,k=summary_clusters_HCLUST_gow[myheigh,impgo])
-    names(hclustgow_res_c) <- 1:766
+    names(hclustgow_res_c) <- 1:nrow(data_use)
     for(t in 1:summary_clusters_HCLUST_gow[myheigh,impgo])  {
       induse <- names(hclustgow_res_c[hclustgow_res_c==t])
       summary_matrices_HCLUST_gow[[myheigh]][induse,induse] <- summary_matrices_HCLUST_gow[[myheigh]][induse,induse] + 1
@@ -312,17 +280,9 @@ if (length(which(lapply(tmp, sum)==0)) > 0) {
   message("Removing the following empty matrices: ") 
   message(paste(names((which(lapply(tmp, sum)==0)))), ".")
 }
-#####
-
-
-
-
-
-
-
 
                                                                       
-### Step 2.2. Filtering non-robust stratifications
+######## Step 2.2. Filtering non-robust stratifications ########
 summary_clusters <- vector("list", length(summary_matrices_MEASURES))
 
 for(i in 1:length(summary_clusters)) {
@@ -369,7 +329,7 @@ qgo <- quantile(summary_matrices_STABILITY[,3], quantileuse)
 JACCARD_DISTANCE_F <- JACCARD_DISTANCE[summary_matrices_STABILITY[, 3] >= qgo,summary_matrices_STABILITY[, 3]>=qgo]
 ### END OF Step 2.2. 
 
-## Step 3. Stratification Representatives 
+######## Step 3. Stratification Representatives ########
 maxgo <- max(JACCARD_DISTANCE_F[JACCARD_DISTANCE_F < 1])
 ordergo <- hclust(1 - as.dist(JACCARD_DISTANCE_F))$order
 
