@@ -7,7 +7,7 @@ Code repository for the analysis in the following article:
 
 
 * [1-Context and Aims](#1-context-and-aims)  
-* [2-Programming Environment & Scripts](#2-programming-environment-&-scripts)  
+* [2-Programming Environment and Scripts](#2-programming-environment-and-scripts)  
 * [3-Input data](#3-input-data)  
 * [4-Approach](#4-approach)  
 * [5-Data used](#5-data-used)  
@@ -21,7 +21,7 @@ To tackle the issue of patient heterogeneity upon hospital admission considering
 
 
 
-## 2-Programming Environment & Scripts
+## 2-Programming Environment and Scripts
 ClustALL pipeline has been stablished in R version 4.2.2 (2022-10-31).
 
 - 00_Functions.R -> Contains all the internal functions and required packages that are necessary to run the ClustALL pipeline.
