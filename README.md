@@ -6,7 +6,7 @@ Code repository for the analysis in the following article:
 #### Medarxive link:
 
 
-* [1-Context and Aims](#1-context and aims)  
+* [1-Context and Aims](#1-context-and-aims)  
 * [2. Programming Environment & Scripts](#2.-programming-environment-&-scripts.)  
 * [3. Input data](#3.-input-data.)  
 * [4. Approach](#4.-approach.)  
