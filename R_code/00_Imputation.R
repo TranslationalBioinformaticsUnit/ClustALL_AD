@@ -1,5 +1,5 @@
 ### 01_ClustALL_noImputation.R
-# This file prepares the data with missing values for imputation with MICE
+# This file prepares the data with missing values for imputation with MICE R package
 # You should run ClustALL taking as an input the output of the imputation and consider the framework the 01b_ClustALL_Imputation to compute clustall.
 
 # Note that imputation would depend specifically on the nature of your data. This script shows the imputation perform in the data mentioned in 05.Dataset
