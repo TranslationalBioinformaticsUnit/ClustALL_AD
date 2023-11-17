@@ -1,15 +1,41 @@
+### 01_ClustALL_noImputation.R
+# This file contains the code to run ClustALL taking as an input a complete dataset with no missing values.
+
 set.seed(1234)
 
-## Step 0. Prepare the environment
-# Load the functions & data
+######## Step 0. Prepare the environment ########
+# Load the packages and functions described in the "00_Functions.R" file
 source("00_Functions.R")
-load("../data/data_use.RData") # Complete dataset
 
+# Load the complete dataset
+load("../data/data_use.RData") 
 
-# Create the objects to store the results
-nvariables <- ncol(data_use) # Number of variables
+# Dataset exploration
+print("Dataset dimension -") 
+dim(data_use)
 
-# Create empty matrix for clustering 
+print("Position of missing values -") # Data frame should not contain missig values. If it has missing values, go to script 01b.
+which(is.na(data_use)) 
+
+print("Variables type -")
+str(data_use)
+
+nvariables <- ncol(data_use) # Store the number of variables
+
+# Categorical variables are converted to binary with one-hot enconding
+tobin <- data_use[, sapply(data_use, is.factor)] # Select factor variables
+# Define one-hot encoding function
+dummy <- dummyVars(" ~ .", data=tobin)
+# Perform one-hot encoding on data frame
+bin <- data.frame(predict(dummy, newdata=tobin))
+names(bin) <- names(tobin)
+
+data_use <- data_use[ , !(names(data_use) %in% names(tobin))] # Remove factor variables
+data_use <- cbind(data_use, bin) # Add binarized facor variables
+
+data_use[,1:nvariables] <- data.frame(apply(data_use[,1:nvariables], 2, as.numeric))
+
+# Create the objects to store the ClustALL stratifications (a: Correlation + K-means ,b: Correlation + H-clust, c: Gower +  K-medoids, d: Gower + H-clust)
 summary_clusters_a <- matrix(0,nvariables,1)
 summary_clusters_b <- matrix(0,nvariables,1)
 summary_clusters_c <- matrix(0,nvariables,1)
@@ -44,12 +70,12 @@ for(i in 1:(nvariables))
   summary_matrices_d[[i]] <- m4
 }
 ​
-## Step 1. Data Complexity Reduction
-### Step 1.1. Dendrogram to assess the correlation between variables, and stablish the number of Depths
+######## Step 1. Data Complexity Reduction ########
+### Step 1.1. Dendrogram to assess the correlation between variables, and stablish the number of depths
 
-cor_est_var <- cor(data_use, method="spearman") # obtain correlations between variables
-variables_clust  <- hclust(as.dist(cor_est_var)) # hierarchical clustering
-possible_heights <- variables_clust$height # obtain the number of depths, based on how many times the dendrogram can be cutted
+cor_est_var <- cor(data_use, method="spearman") # Obtain correlations between variables
+variables_clust  <- hclust(as.dist(cor_est_var)) # Compute the dendrogram for variables by hierarchical clustering
+possible_heights <- variables_clust$height # Obtain the number of depths, based on how many times the dendrogram can be cutted
 
 ### Step 1.2. Reprocessing
 for (heights_cut in (length(possible_heights)-(ncol(data_use)-2)):(length(possible_heights)-1)) { # compute for all possible depths
@@ -80,7 +106,7 @@ for (heights_cut in (length(possible_heights)-(ncol(data_use)-2)):(length(possib
   }
   ## END OF Step 1. 
   
-## Step 2. Statrification Process
+######## Step 2. Statrification Process ########
 ### Step 2.1. Conducting statrifications 
 data_PCA_scaled <- apply(data_PCA, 2, scale) # scale PCA values for correlation distances; the clustering methods that are going to be applied here are (a) K-MEANS and (b) H-CLUST clustering
 rownames(data_PCA_scaled) <- 1:nrow(data_PCA_scaled) # rename otherwise clValid function does not detect rownames of the df
@@ -122,7 +148,7 @@ for (t in 1:oS_hclust) {
 }
 summary_clusters_b[heights_cut, 1] <- oS_hclust
   
-  
+#### Gower Distance preparation
 # Gower distances: the clustering methods that are going to be applied here are (c) K-Medoids and (d) H-Clust clustering
 # Gower treats different the different data types, let's assess the type of the embeddings and perform the necessary modifications
 PCA_gower <- as.data.frame(data_PCA) 
@@ -198,7 +224,7 @@ if (length(which(lapply(tmp, sum)==0)) > 0) {
 }
 
 
-### Step 2.2. Filtering non-robust stratifications
+######## Step 2.2. Filtering non-robust stratifications ########
 summary_clusters <- vector("list", length(summary_matrices_MEASURES))
 
 for(i in 1:length(summary_clusters)) {
@@ -245,7 +271,7 @@ qgo <- quantile(summary_matrices_STABILITY[,3], quantileuse)
 JACCARD_DISTANCE_F <- JACCARD_DISTANCE[summary_matrices_STABILITY[, 3] >= qgo,summary_matrices_STABILITY[, 3]>=qgo]
 ### END OF Step 2.2. 
 
-## Step 3. Stratification Representatives 
+######## Step 3. Stratification Representatives ########
 maxgo <- max(JACCARD_DISTANCE_F[JACCARD_DISTANCE_F < 1])
 ordergo <- hclust(1 - as.dist(JACCARD_DISTANCE_F))$order
 
