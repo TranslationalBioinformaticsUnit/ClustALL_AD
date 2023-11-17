@@ -6,11 +6,11 @@ Code repository for the analysis in the following article:
 #### Medarxive link:
 
 
-- [1. Context and Aim](#1.-context-and-aim.)  
-- [2. Programming Environment & Scripts](#2.-programming-environment-&-scripts.)  
-- [3. Input data](#3.-input-data.)  
-- [4. Approach](#4.-approach.)  
-- [5. Data used](#5.data-used.)  
+- [1. Context and Aim](##1.-context-and-aim.)  
+- [2. Programming Environment & Scripts](##2.-programming-environment-&-scripts.)  
+- [3. Input data](##3.-input-data.)  
+- [4. Approach](##4.-approach.)  
+- [5. Data used](##5.data-used.)  
 
 ## 1. Context and Aim.
 Patient heterogeneity poses a significant obstacle in both individual patient management and the design of clinical trials, particularly in the management of complex diseases. Many existing clinical classifications rely on scores constructed for predicting patient outcomes. However, these conventional methods may overlook features contributing to heterogeneity that do not necessarily translate into prognostic implications.
@@ -25,6 +25,7 @@ To tackle the issue of patient heterogeneity upon hospital admission considering
 ClustALL pipeline has been stablished in R version 4.2.2 (2022-10-31).
 
 - 00_Functions.R -> Contains all the internal functions and required packages that are necessary to run the ClustALL pipeline.
+- 00_Imputation.R -> Contains an example on performing imputation with MICE package
 - 01a_ClustALL_noImputation.R -> Complete cluster pipeline for data sets with **NO missing values**. 
    >**Step 1**: *Data Complexity Reduction*
    >**Step 2**: *Stratification Process*
